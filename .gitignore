@@ -1,0 +1,23 @@
+# Python Virtual Environment
+env/
+
+# Package build files
+*egg-info/
+dist/
+build/django-conf/conf/
+
+# .idea meta files
+.idea/
+
+# Python cache files
+*.pyc
+__pycache__/
+
+# SQLite 3 database files
+*.sqlite3
+
+# Actual .conf files
+*.conf
+
+# Other files
+*.swp
