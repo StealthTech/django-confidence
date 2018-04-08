@@ -26,15 +26,16 @@ class OptionsPreset(Preset):
             'secret_key': secret_key,
             'debug': debug,
             'allowed_hosts': allowed_hosts,
+            'database': None,
+            'cache': None,
         }
         markup.update(**kwargs)
         super(OptionsPreset, self).__init__(title, markup)
 
 
 class DatabasePreset(Preset):
-    def __init__(self, title, system, name, user, password, tcp_addr, tcp_port, **kwargs):
+    def __init__(self, title, name, user, password, tcp_addr, tcp_port, **kwargs):
         markup = {
-            'system': system,
             'name': name,
             'user': user,
             'password': password,
@@ -46,9 +47,8 @@ class DatabasePreset(Preset):
 
 
 class CachePreset(Preset):
-    def __init__(self, title, system, enabled, tcp_addr, tcp_port, **kwargs):
+    def __init__(self, title, enabled, tcp_addr, tcp_port, **kwargs):
         markup = {
-            'system': system,
             'enabled': enabled,
             'tcp_addr': tcp_addr,
             'tcp_port': tcp_port

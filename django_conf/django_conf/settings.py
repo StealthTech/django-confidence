@@ -14,7 +14,7 @@ PROJECT_CONF = Configuration.compile_from_presets(os.path.join(PROJECT_ROOT, 'co
     RedisPreset(enabled=False, tcp_addr=None, tcp_port=None),
 ])
 
-SECRET_KEY = PROJECT_CONF.get('options', 'secret_key')
+SECRET_KEY = PROJECT_CONF.get('options', 'secret_key') or 'secret'
 
 DEBUG = PROJECT_CONF.get_bool('options', 'debug')
 

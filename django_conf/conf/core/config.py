@@ -14,6 +14,9 @@ class Configuration:
         self.filepath = filepath
         self.markup = markup
 
+        if not self.exists():
+            self.make()
+
     def exists(self):
         return os.path.exists(self.filepath)
 
@@ -48,8 +51,12 @@ class Configuration:
 
         try:
             return config[section][option]
-        except (configparser.NoSectionError, configparser.NoOptionError):
-            return None
+        except (configparser.NoSectionError, configparser.NoOptionError, KeyError):
+            markup_options = self.markup.get(section)
+            if not markup_options:
+                return
+            markup_value = markup_options.get(option)
+            return markup_value
 
     def get_bool(self, section, option):
         value = self.get(section, option)
