@@ -1,7 +1,7 @@
 import os
 
 from conf import Configuration
-from conf.presets import ProjectPreset, OptionsPreset, MySQLPreset, RedisPreset
+from conf.presets import ProjectPreset, OptionsPreset, MySQLPreset, RedisPreset, MailDevPreset
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,9 +12,10 @@ PROJECT_CONF = Configuration.compile_from_presets(os.path.join(PROJECT_ROOT, 'co
     OptionsPreset(debug=True, allowed_hosts=['127.0.0.1']),
     MySQLPreset(name=None, user=None, password=None, tcp_addr=None, tcp_port=None),
     RedisPreset(enabled=False, tcp_addr=None, tcp_port=None),
+    MailDevPreset(enabled=False),
 ])
 
-SECRET_KEY = PROJECT_CONF.get('options', 'secret_key') or 'secret'
+SECRET_KEY = PROJECT_CONF.get('options', 'secret_key')
 
 DEBUG = PROJECT_CONF.get_bool('options', 'debug')
 

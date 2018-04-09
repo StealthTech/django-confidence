@@ -1,13 +1,17 @@
 class Preset:
+    DEFAULTS = {}
+
     def __init__(self, title, options):
-        self.__title = title
-        self.__options = options
+        self.title = title
+        self.options = options
 
     @property
     def markup(self):
         # print({self.__title: self.__options})
-        return {self.__title: self.__options}
+        return {self.title: self.options}
 
+    def merge_defaults(self, params, **kwargs):
+        return {**self.DEFAULTS, **params, **kwargs}
 
 class ProjectPreset(Preset):
     def __init__(self, name, version, site_url, title='project', **kwargs):
@@ -28,6 +32,7 @@ class OptionsPreset(Preset):
             'allowed_hosts': allowed_hosts,
             'database': None,
             'cache': None,
+            'mailing': None,
         }
         markup.update(**kwargs)
         super(OptionsPreset, self).__init__(title, markup)
@@ -55,3 +60,20 @@ class CachePreset(Preset):
         }
         markup.update(**kwargs)
         super(CachePreset, self).__init__(title, markup)
+
+
+class EmailPreset(Preset):
+    def __init__(self, title, enabled, use_tls, host, host_user, port, default_from_email, feedback_email, **kwargs):
+        markup = {
+            'enabled': enabled,
+            'use_tls': use_tls,
+            'host': host,
+            'host_user': host_user,
+            'port': port,
+            'default_from_email': default_from_email,
+            'feedback_email': feedback_email,
+        }
+        markup.update(**kwargs)
+        super(EmailPreset, self).__init__(title, markup)
+
+

@@ -1,2 +1,3 @@
-from .cache import *
-from .database import *
+from .cache import RedisPreset
+from .database import MySQLPreset, PostgreSQLPreset
+from .email import MailDevPreset

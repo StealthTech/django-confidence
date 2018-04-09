@@ -4,15 +4,16 @@ import os
 
 class Configuration:
     @classmethod
-    def compile_from_presets(cls, filepath, presets):
+    def compile_from_presets(cls, filepath, presets, instant_start=False):
         markup = {}
         for preset in presets:
             markup.update(preset.markup)
-        return cls(filepath, markup)
+        return cls(filepath, markup, instant_start)
 
-    def __init__(self, filepath, markup):
+    def __init__(self, filepath, markup, instant_start=False):
         self.filepath = filepath
         self.markup = markup
+        self.instant_start = instant_start
 
         if not self.exists():
             self.make()
@@ -44,6 +45,10 @@ class Configuration:
 
         with open(self.filepath, 'w') as f:
             conf.write(f)
+
+        if not self.instant_start:
+            print('Configuration file created at {}. You may want to edit it before application start.'.format(self.filepath))
+            exit()
 
     def get(self, section, option):
         config = configparser.ConfigParser()
