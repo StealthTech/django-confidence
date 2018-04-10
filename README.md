@@ -1,11 +1,10 @@
 # Django Confidence
-=====
-![Python Supported Versions](https://img.shields.io/badge/python-3.6-blue.svg)
+
+![Python Supported Version](https://img.shields.io/badge/python-3.6-blue.svg)
 
 Django Confidence is a Django app to make configuration files automatically.
 
-Quick start
------------
+## Quick start
 
 1. Add "confidence" to your INSTALLED_APPS setting like this::
 
@@ -55,3 +54,27 @@ Quick start
 	ALLOWED_HOSTS = PROJECT_CONF.get_csv('options', 'allowed_hosts')
 
 8. Enjoy!
+
+## Currently distributed presets
+
+Configuration presets are intended to simplify the process of setting up configuration files.
+
+Presets are using default and most common options for provided services.
+
+At this moment there are different presets for some of common database management systems, cache and mailing modules.
+
+Usage: `from confidence.presets import [PRESET_NAME]`
+
+### Databases
+
+1. MySQL: `confidence.presets.MySQLPreset`
+
+2. PostgreSQL: `confidence.presets.PostgreSQLPreset`
+
+### Cache
+
+1. Redis: `confidence.presets.RedisPresets`
+
+### Mailing
+
+1. MailDev: `confidence.presets.MailDevPreset`
