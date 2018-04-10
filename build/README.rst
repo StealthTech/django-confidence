@@ -4,12 +4,16 @@ Django Confidence
 
 Django Confidence is a Django app to make configuration files automatically.
 
+This app is developed to help developers create their own layout to configuration files quick and simple with built-in dictionaries or by using configuration presets (that make it even more easier).
+
 Quick start
 -----------
 
 1. Add "confidence" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
+        'django.contrib.admin', 
+        'django.contrib.auth',
         ...
         'confidence',
     ]

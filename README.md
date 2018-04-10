@@ -8,6 +8,8 @@ This app is developed to help developers create their own layout to configuratio
 
 ## Quick start
 
+0. Run `pip install django-confidence`
+
 1. Add the `confidence` package to your `INSTALLED_APPS` setting like this:
 
 ```python
