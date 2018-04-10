@@ -6,19 +6,24 @@ Django Confidence is a Django app to make configuration files automatically.
 
 ## Quick start
 
-1. Add "confidence" to your INSTALLED_APPS setting like this::
+1. Add the `confidence` package to your `INSTALLED_APPS` setting like this:
 
+```python
     INSTALLED_APPS = [
         ...
         'confidence',
     ]
+```
 
-2. In your settings.py import "Configuration" class from "confidence" package like this::
+2. In your settings.py import `Configuration` class from `confidence` package like this:
 
+```python
     from confidence import Configuration
+```
 
-3. Create a dictionary of config fieldsets like this::
+3. Create a dictionary of config fieldsets like this:
 
+```python
 	markup = {
 		'section': {
 			'option': 'value'
@@ -28,13 +33,17 @@ Django Confidence is a Django app to make configuration files automatically.
 			'project_name': 'Awesome Project',
 		}
 	}
+```
 
-4. In your settings.py create a variable called PROJECT_CONF and fill it with a Configuration instance::
+4. In your settings.py create a variable called `PROJECT_CONF` and fill it with a `Configuration` instance:
 
-	PROJECT_CONF = Configuration(filepath:str, markup:dict)
+```python
+	PROJECT_CONF = Configuration(filepath, markup)
+```
 
-4.1 Optional. You can use library of preset configuration files by importing from conf.presets. Example::
+**Optional**. You can use library of preset configuration files by importing from conf.presets. Example:
 
+```python
 	from confidence import Configuration
 	from confidence.presets import ProjectPreset, OptionsPreset
 
@@ -42,16 +51,19 @@ Django Confidence is a Django app to make configuration files automatically.
 		ProjectPreset(name='Awesome Project', version='1.0', site_url='http://awesome!'),
 		OptionsPreset(debug=True, allowed_hosts=['127.0.0.1']),
 	])
+```
 
-5. Run python manage.py makeconf. Configuration file will be created.
+5. Run `python manage.py makeconf`. Configuration file will be created.
 
 6. Edit your configuration file as you want to.
 
-7. Use it in your settings.py by using get-like methods::
+7. Use it in your `settings.py` by using get-like methods::
 
+```python
 	PROJECT_NAME = PROJECT_CONF.get('project', 'project_name')
 	DEBUG = PROJECT_CONF.get_bool('options', 'debug')
 	ALLOWED_HOSTS = PROJECT_CONF.get_csv('options', 'allowed_hosts')
+```
 
 8. Enjoy!
 
@@ -67,14 +79,14 @@ Usage: `from confidence.presets import [PRESET_NAME]`
 
 ### Databases
 
-1. MySQL: `confidence.presets.MySQLPreset`
+* MySQL: `confidence.presets.MySQLPreset`
 
-2. PostgreSQL: `confidence.presets.PostgreSQLPreset`
+* PostgreSQL: `confidence.presets.PostgreSQLPreset`
 
 ### Cache
 
-1. Redis: `confidence.presets.RedisPresets`
+* Redis: `confidence.presets.RedisPresets`
 
 ### Mailing
 
-1. MailDev: `confidence.presets.MailDevPreset`
+* MailDev: `confidence.presets.MailDevPreset`
