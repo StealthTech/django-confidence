@@ -1,11 +1,19 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-from conf import Configuration
+from confidence import Configuration
 
 
 class Command(BaseCommand):
-    help = 'Checks if project configuration file already exists.'
+    help = 'Creates project configuration file.'
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--force',
+            action='store_true',
+            dest='force',
+            help='Force management command to rewrite configuration file with defaults if it already exists.',
+        )
 
     def handle(self, *args, **options):
         project_conf_variable = 'PROJECT_CONF'
@@ -18,9 +26,12 @@ class Command(BaseCommand):
         if not isinstance(project_conf, Configuration):
             CommandError('Variable {} in settings.py must be a Configuration instance.'.format(project_conf_variable))
 
-        if not project_conf.exists():
-            message = self.style.WARNING('[WARNING] Configuration file doesn\'t '
-                                         'exist at {}.'.format(project_conf.filepath))
+        try:
+            project_conf.make(force=options.get('force'))
+        except (FileExistsError, OSError) as ex:
+            message = self.style.ERROR('[ERROR] Can\'t create a configuration file at {}.'
+                                       '\nREASON: {}'.format(project_conf.filepath, ex))
         else:
-            message = self.style.SUCCESS('[SUCCESS] Configuration file found at {}'.format(project_conf.filepath))
+            message = self.style.SUCCESS('[SUCCESS] Created a configuration file at {}'.format(project_conf.filepath))
+
         self.stdout.write(message)

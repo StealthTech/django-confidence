@@ -1,4 +1,4 @@
-from conf.presets.generic import EmailPreset
+from ..generic import EmailPreset
 
 
 class MailDevPreset(EmailPreset):

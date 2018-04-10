@@ -2,9 +2,9 @@
 env/
 
 # Package build files
-*egg-info/
-dist/
-build/django-conf/conf/
+build/*egg-info/
+build/dist/
+build/confidence/
 
 # .idea meta files
 .idea/

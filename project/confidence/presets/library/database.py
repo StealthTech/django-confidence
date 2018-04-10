@@ -1,4 +1,4 @@
-from conf.presets.generic import DatabasePreset
+from ..generic import DatabasePreset
 
 
 class MySQLPreset(DatabasePreset):

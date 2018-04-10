@@ -1,7 +1,7 @@
 import os
 
-from conf import Configuration
-from conf.presets import ProjectPreset, OptionsPreset, MySQLPreset, RedisPreset, MailDevPreset
+from confidence import Configuration
+from confidence.presets import ProjectPreset, OptionsPreset, MySQLPreset, RedisPreset, MailDevPreset
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'conf',
+    'confidence',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'django_conf.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_conf.wsgi.application'
+WSGI_APPLICATION = 'project.wsgi.application'
 
 
 DATABASES = {

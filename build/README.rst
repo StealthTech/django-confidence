@@ -1,22 +1,22 @@
 =====
-Django Configuration
+Django Confidence
 =====
 
-Django Configuration is a Django app to make configuration files automatically.
+Django Confidence is a Django app to make configuration files automatically.
 
 Quick start
 -----------
 
-1. Add "conf" to your INSTALLED_APPS setting like this::
+1. Add "confidence" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...
-        'conf',
+        'confidence',
     ]
 
-2. In your settings.py import "Configuration" class from "conf" package like this::
+2. In your settings.py import "Configuration" class from "confidence" package like this::
 
-    from conf import Configuration
+    from confidence import Configuration
 
 3. Create a dictionary of config fieldsets like this::
 
@@ -36,8 +36,8 @@ Quick start
 
 4.1 Optional. You can use library of preset configuration files by importing from conf.presets. Example::
 
-	from conf import Configuration
-	from conf.presets import ProjectPreset, OptionsPreset
+	from confidence import Configuration
+	from confidence.presets import ProjectPreset, OptionsPreset
 
 	PROJECT_CONF = Configuration.compile_from_presets(filepath, [
 		ProjectPreset(name='Awesome Project', version='1.0', site_url='http://awesome!'),

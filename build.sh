@@ -1,8 +1,9 @@
 #!/bin/bash
 
-rm -r build/django-conf/conf
-cp -r django_conf/conf build/django-conf
-source env/bin/activate
-cd build/django-conf
-python setup.py sdist
+PROJECT_NAME="confidence"
 
+rm -r "build/$PROJECT_NAME"
+cp -r "project/$PROJECT_NAME" build
+source "env/bin/activate"
+cd build
+python setup.py sdist
