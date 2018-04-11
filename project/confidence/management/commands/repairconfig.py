@@ -21,6 +21,9 @@ class Command(BaseCommand):
         if not project_conf.exists():
             message = self.style.WARNING('[WARNING] Configuration file doesn\'t '
                                          'exist at {}.'.format(project_conf.filepath))
+            self.stdout.write(message)
+            project_conf.make()
         else:
-            message = self.style.SUCCESS('[SUCCESS] Configuration file found at {}'.format(project_conf.filepath))
-        self.stdout.write(message)
+            message = '[INFO] Configuration file found at {}'.format(project_conf.filepath)
+            self.stdout.write(message)
+            project_conf.repair()

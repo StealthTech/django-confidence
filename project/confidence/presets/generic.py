@@ -7,11 +7,11 @@ class Preset:
 
     @property
     def markup(self):
-        # print({self.__title: self.__options})
         return {self.title: self.options}
 
     def merge_defaults(self, params, **kwargs):
         return {**self.DEFAULTS, **params, **kwargs}
+
 
 class ProjectPreset(Preset):
     def __init__(self, name, version, site_url, title='project', **kwargs):

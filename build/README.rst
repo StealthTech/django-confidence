@@ -48,7 +48,7 @@ Quick start
 		OptionsPreset(debug=True, allowed_hosts=['127.0.0.1']),
 	])
 
-5. Run python manage.py makeconf. Configuration file will be created.
+5. Run python manage.py makeconfig. Configuration file will be created.
 
 6. Edit your configuration file as you want to.
 

@@ -59,7 +59,7 @@ PROJECT_CONF = Configuration.compile_from_presets(filepath, [
 ])
 ```
 
-5. Run `python manage.py makeconf`. Configuration file will be created.
+5. Run `python manage.py makeconfig`. Configuration file will be created.
 
 6. Edit your configuration file as you want to.
 
@@ -98,3 +98,9 @@ At this moment there are different presets for some of common database managemen
 ### Mailing
 
 * **MailDev**: `confidence.presets.MailDevPreset`
+
+## Available management commands
+
+* **makeconfig [--force]**: creates a configuration file at specified in `PROJECT_CONF` (`Configuration` instance) declared at `settings.py`. Optional: use [--force] to overwrite file if it exists.
+
+* **repairconfig**: repairs configuration file if any configuration sections or options are missing.
