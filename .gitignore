@@ -16,8 +16,9 @@ __pycache__/
 # SQLite 3 database files
 *.sqlite3
 
-# Actual .conf files
+# Actual config files
 *.conf
+*.json
 
 # Other files
 *.swp

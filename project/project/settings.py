@@ -1,25 +1,18 @@
 import os
 
 from confidence import Configuration
-from confidence.presets import ProjectPreset, OptionsPreset, MySQLPreset, RedisPreset, MailDevPreset
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-PROJECT_CONF = Configuration.compile_from_presets(os.path.join(PROJECT_ROOT, 'conf/project.conf'), [
-    ProjectPreset(name='TestProject', version='v1.0', site_url='http://google.com'),
-    OptionsPreset(debug=True, allowed_hosts=['127.0.0.1']),
-    MySQLPreset(name=None, user=None, password=None, tcp_addr=None, tcp_port=None),
-    RedisPreset(enabled=False, tcp_addr=None, tcp_port=None),
-    MailDevPreset(enabled=False),
-])
+config = Configuration(BASE_DIR)
 
-SECRET_KEY = PROJECT_CONF.get('options', 'secret_key')
+SECRET_KEY = config.get('environment') or '123'
 
-DEBUG = PROJECT_CONF.get_bool('options', 'debug')
+DEBUG = config.get('environment') or True
 
-ALLOWED_HOSTS = PROJECT_CONF.get_csv('options', 'allowed_hosts')
+ALLOWED_HOSTS = config.get('environment') or []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
