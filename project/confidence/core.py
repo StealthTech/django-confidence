@@ -39,7 +39,7 @@ class Configuration:
     }
 
     def __init__(self, workdir):
-        self.workdir = os.path.join(workdir, '_confidence')
+        self.workdir = os.path.join(workdir, '.confidence')
 
         self.settings_filepath = os.path.join(self.workdir, 'settings.json')
         self.blueprint_filepath = os.path.join(self.workdir, 'blueprint.json')
