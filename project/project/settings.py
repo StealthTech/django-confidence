@@ -89,5 +89,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
+
+CONFIDENCE_EXTRA_LAYOUT = {
+    'hello': 'world',
+}

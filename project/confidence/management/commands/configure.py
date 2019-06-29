@@ -80,7 +80,13 @@ class Command(BaseCommand):
                 pass
         # Presets selection / End
 
-        config.initialize(selected_presets)
+        try:
+            extra_layout = settings.CONFIDENCE_EXTRA_LAYOUT
+            print_formatted(f'Extra layout from CONFIDENCE_EXTRA_LAYOUT setting will be added to blueprint.')
+        except AttributeError:
+            extra_layout = None
+
+        config.initialize(selected_presets, extra_layout=extra_layout)
         print_formatted(f'Created configuration blueprint at {config.blueprint_filepath}.')
 
         if option_apply:

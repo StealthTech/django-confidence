@@ -127,7 +127,7 @@ class Configuration:
         with open(self.settings_filepath, 'w') as f:
             json.dump(settings_dct, f, indent=4)
 
-    def initialize(self, presets_lst):
+    def initialize(self, presets_lst, extra_layout=None):
         self._prepare_workdir()
         environment_lst = self.settings['environments']
 
@@ -138,6 +138,9 @@ class Configuration:
         config_dct = {
             environment: environment_dct for environment in environment_lst
         }
+
+        if extra_layout:
+            config_dct.update(extra_layout)
 
         with open(self.blueprint_filepath, 'w') as f:
             json.dump(config_dct, f, indent=4)
