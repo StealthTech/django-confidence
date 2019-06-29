@@ -1,5 +1,6 @@
 import os
 import json
+import shutil
 
 from .presets.generic import ProjectSettingsPreset, EnvironmentSettingsPreset
 from .presets.databases import PostgreSQLPreset, MySQLPreset
@@ -49,16 +50,42 @@ class Configuration:
         filename = self.settings.get('filename')
         self.filepath = os.path.join(self.workdir, filename) if filename else None
 
+        self.current_environment = os.environ.get('CONFIDENCE_ENV')
+
         self.content = self.load()
 
     def __getitem__(self, item):
+        if self.is_current_environment_valid():
+            return self.content[self.current_environment][item]
         return self.content[item]
 
     def __setitem__(self, key, value):
-        self.content[key] = value
+        if self.is_current_environment_valid():
+            self.content[self.current_environment][key] = value
+        else:
+            self.content[key] = value
 
-    def get(self, key, default=None):
+    def get_raw(self, key, default=None):
+        if self.is_current_environment_valid():
+            return self.content[self.current_environment].get(key, default)
         return self.content.get(key, default)
+
+    def get(self, chain, default=None):
+        keys = chain.split('.')
+
+        if self.is_current_environment_valid():
+            obj = self.content[self.current_environment]
+        else:
+            obj = self.content
+
+        for key in keys:
+            if obj is None:
+                return default
+            obj = obj.get(key)
+        return obj
+
+    def is_current_environment_valid(self):
+        return self.current_environment in self.settings.get('environments', [])
 
     def _prepare_workdir(self):
         return os.makedirs(self.workdir, exist_ok=True)
@@ -70,7 +97,7 @@ class Configuration:
         return os.path.exists(self.settings_filepath)
 
     def exists(self):
-        return os.path.exists(self.filepath)
+        return os.path.exists(self.filepath) if self.filepath else False
 
     def load_settings(self):
         if not self.settings_exists():
@@ -95,15 +122,21 @@ class Configuration:
 
     def setup(self, settings_dct):
         self._prepare_workdir()
+        self.settings = settings_dct
 
         with open(self.settings_filepath, 'w') as f:
             json.dump(settings_dct, f, indent=4)
 
     def initialize(self, presets_lst):
         self._prepare_workdir()
+        environment_lst = self.settings['environments']
+
+        environment_dct = {
+            preset.title: preset.options for preset in presets_lst
+        }
 
         config_dct = {
-            preset.title: preset.options for preset in presets_lst
+            environment: environment_dct for environment in environment_lst
         }
 
         with open(self.blueprint_filepath, 'w') as f:
@@ -113,8 +146,19 @@ class Configuration:
         self.filepath = os.path.join(self.workdir, filename)
 
     def replicate(self):
-        with open(self.blueprint_filepath, 'r') as f:
-            blueprint = json.load(f)
+        try:
+            with open(self.blueprint_filepath, 'r') as f:
+                blueprint = json.load(f)
+        except FileNotFoundError:
+            return False
 
         with open(self.filepath, 'w') as f:
             json.dump(blueprint, f, indent=4)
+        return True
+
+    def cleanup(self):
+        try:
+            shutil.rmtree(self.workdir)
+            return True
+        except FileNotFoundError:
+            return False

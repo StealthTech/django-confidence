@@ -1,13 +1,12 @@
-import os
-
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from confidence import Configuration
+from confidence.utils import print_formatted, input_formatted
 
 
 class Command(BaseCommand):
-    help = 'Creates project configuration file.'
+    help = 'Creates project configuration blueprint and optionally configuration file.'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -32,36 +31,45 @@ class Command(BaseCommand):
         if not config.settings or option_blank:
             settings_dct = dict()
 
-            filename = input('Введите название для конфигурационного файла (по-умолчанию config.json): ') or 'config.json'
+            filename = input_formatted(
+                'Enter configuration file name (leave it blank for `config.json`): '
+            ) or 'config.json'
+
             if not filename.endswith('.json'):
                 filename += '.json'
             settings_dct['filename'] = filename
 
+            environments = input_formatted(
+                'Enter your root environment layouts separated by spaces'
+                ' (leave it blank for `development production`): '
+            ).split() or ['development', 'production']
+            settings_dct['environments'] = environments
+
             config.setup(settings_dct)
             config.set_filename(filename)
         else:
-            print(f'Найдено ранее указанное имя конфигурационного файла: {config.settings["filename"]}')
+            print_formatted(f'Found already set configuration file name: `{config.settings["filename"]}`.')
 
         if config.blueprint_exists() and not option_blank:
-            response = input(f'Обнаружен blueprint по пути {config.blueprint_filepath}. Перезаписать? Y/n ')
+            response = input_formatted(f'Found blueprint at {config.blueprint_filepath}. Rewrite? Y/n ')
             if response.lower() not in ['y', 'yes']:
-                print('Отмена операции.')
+                print_formatted('Aborting operation.')
                 return
 
-        # Выбор пресетов из списка / Начало
-        print('Для настройки доступны следующие пресеты:')
+        # Preset selection / Start
+        print_formatted('Choose presets that you want to use in your configuration:')
         presets = []
         idx = 0
-        for _, group in config.presets.items():
-            print(f'- - [{group["verbose_name"]}] - -')
+        for group in config.presets.values():
+            print_formatted(f'- - - [{group["verbose_name"]}] - - -')
 
             for preset in group['items']:
                 presets.append(preset)
                 preset_name = preset.get_full_verbose_name()
-                print(f'{idx + 1} : {preset_name}')
+                print_formatted(f'{idx + 1} : {preset_name}', level=1)
                 idx += 1
 
-        preset_idxs_spl = input('Введите номера выбранных пресетов через пробел: ').split()
+        preset_idxs_spl = input_formatted('Enter indices of presets you\'ve chosen separated by spaces: ').split()
 
         selected_presets = []
         for preset_idx in preset_idxs_spl:
@@ -70,12 +78,11 @@ class Command(BaseCommand):
                 selected_presets.append(presets[idx])
             except (IndexError, ValueError) as e:
                 pass
-
-        # Выбор пресетов из списка / Конец
+        # Presets selection / End
 
         config.initialize(selected_presets)
-        print(f'Шаблон конфигурационного файла создан по пути {config.blueprint_filepath}')
+        print_formatted(f'Created configuration blueprint at {config.blueprint_filepath}.')
 
         if option_apply:
             config.replicate()
-            print(f'Конфигурационный файл создан по пути {config.filepath}')
+            print_formatted(f'Created configuration file at {config.filepath}.')

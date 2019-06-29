@@ -8,11 +8,11 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 config = Configuration(BASE_DIR)
 
-SECRET_KEY = config.get('environment') or '123'
+SECRET_KEY = config.get('environment.secret_key', 'verysecretkey')
 
-DEBUG = config.get('environment') or True
+DEBUG = config.get('environment.debug', True)
 
-ALLOWED_HOSTS = config.get('environment') or []
+ALLOWED_HOSTS = config.get('environment.allowed_hosts', [])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
